@@ -50,6 +50,7 @@ const transfers = {
       amount,
       notes,
       userId: 1,
+      receiverId: 1,
       date: new Date()
     }
     transferModels.insertTransfer(data)
