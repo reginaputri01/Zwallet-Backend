@@ -9,7 +9,7 @@ router
   .post('/login', userController.login)
   .post('/forgotpassword', userForgot.forgotPassword)
   .patch('/resetpassword/:id', userController.resetPassword)
-  .patch('/myProfile/:id', userController.profileUser)
+  .patch('/editProfile/:id', upload, userController.updateProfile)
   .patch('/uploadImg/:id', upload, userController.updateImage)
   .patch('/createPin/:id', upload, userController.createPin)
   .get('/:id', userController.getUserById)

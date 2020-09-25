@@ -38,9 +38,8 @@ const contacts = {
     return new Promise((resolve, reject) => {
       connection.query('SELECT * FROM contacts WHERE id = ?', id, (err, result) => {
         if (!err) {
+          console.log(result)
           if (result != '') {
-            resolve('ID Contact Already Exists')
-          } else {
             connection.query('DELETE FROM contacts WHERE id = ?', id, (err, result) => {
               if (!err) {
                 if (result.affectedRows != 0) {
@@ -52,6 +51,8 @@ const contacts = {
                 reject(new Error(err))
               }
             })
+          } else {
+            resolve('ID Contact Not Found')
           }
         } else {
           reject(new Error(err))

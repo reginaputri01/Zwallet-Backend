@@ -77,11 +77,11 @@ module.exports = {
     })
   },
 
-  profileUser: (req, res) => {
+  updateProfile: (req, res) => {
     const id = req.params.id
     const { firstName, lastName, username, email, phoneNumber } = req.body
     const data = {
-      firstName, 
+      firstName,
       lastName,
       username,
       email,
@@ -89,10 +89,12 @@ module.exports = {
     }
     modelUser.updateProfile(id, data)
     .then((result) => {
-      helpers.response(res, null, result, 200, null)
+        const resultUsers = result
+        console.log(result)
+        helpers.response(res, null, resultUsers, 200, null)
     })
     .catch((err) => {
-      console.log(err)
+        console.log(err)
     })
   },
 
