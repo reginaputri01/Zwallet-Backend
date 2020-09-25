@@ -1,15 +1,15 @@
-const contactModels = require('../models/contactsModel')
+const receiverModels = require('../models/receiversModel')
 const helpers = require('../helpers/helpers')
 
-const contacts = {
-  getContactById: (req, res) => {
+const receivers = {
+  getReceiverById: (req, res) => {
     const id = req.params.id
-    contactModels.getContactById(id)
+    receiverModels.getReceiverById(id)
       .then((result) => {
         if (result != '') {
           helpers.response(res, null, result, 200, null)
         } else {
-          helpers.response(res, null, 'Contact not found', 404, 'Error')
+          helpers.response(res, null, 'Receiver not found', 404, 'Error')
         }
       })
       .catch((err) => {
@@ -17,20 +17,20 @@ const contacts = {
       })
   },
 
-  getAllContact: (req, res) => {
-    contactModels.getAllContact()
+  getAllReceiver: (req, res) => {
+    receiverModels.getAllReceiver()
       .then((result) => {
         if (result != '') {
           helpers.response(res, null, result, 200, null)
         } else {
-          helpers.response(res, null, 'Contact not found', 404, 'Error')
+          helpers.response(res, null, 'Receiver not found', 404, 'Error')
         }
       })
       .catch((err) => {
         console.log(err)
       })
   },
-  updateContact: (req, res) => {
+  updateReceiver: (req, res) => {
     const id = req.params.id
     const { name } = req.body
     const data = {
@@ -41,19 +41,19 @@ const contacts = {
         data.image = process.env.BASE_URL + 'uploads/' + req.file.filename
     }
 
-    contactModels.updateContact(id, data)
+    receiverModels.updateReceiver(id, data)
       .then((result) => {
-        const resultContacts = result
+        const resultReceiver= result
         console.log(result)
-        helpers.response(res, null, resultContacts, 200, null)
+        helpers.response(res, null, resultReceiver, 200, null)
       })
       .catch((err) => {
         console.log(err)
       })
   },
-  deleteContact: (req, res) => {
+  deleteReceiver: (req, res) => {
     const id = req.params.id
-    contactModels.deleteContact(id)
+    receiverModels.deleteReceiver(id)
       .then((result) => {
         if (result != 'Data not found') {
           helpers.response(res, null, result, 200, null)
@@ -65,14 +65,14 @@ const contacts = {
         console.log(err)
       })
   },
-  insertContact: (req, res) => {
+  insertReceiver: (req, res) => {
     const { name,  phoneNumber } = req.body
     const data = {
       name,
       image: 'https://i7.pngguru.com/preview/527/663/825/logo-person-user-person-icon.jpg',
       phoneNumber
     }
-    contactModels.insertContact(data)
+    receiverModels.insertReceiver(data)
       .then((result) => {
         console.log(result)
         helpers.response(res, null, result, 200, null)
@@ -83,4 +83,4 @@ const contacts = {
   }
 }
 
-module.exports = contacts
+module.exports = receivers

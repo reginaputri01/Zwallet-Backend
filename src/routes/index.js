@@ -1,13 +1,13 @@
 const express = require('express')
 const usersRouters = require('./users')
-const contactsRouters = require('./contacts')
+const receiverRouters = require('./receivers')
 const transferRouters = require('./transfer')
 const historyRouters = require('./histories')
 const router = express.Router()
 
 router
   .use('/users', usersRouters)
-  .use('/contacts', contactsRouters)
+  .use('/receivers', receiverRouters)
   .use('/transfer', transferRouters)
   .use('/history', historyRouters)
 

@@ -1,9 +1,9 @@
 const connection = require('../configs/db')
 
-const contacts = {
-  getContactById: (id) => {
+const receivers = {
+  getReceiverById: (id) => {
     return new Promise((resolve, reject) => {
-      connection.query('SELECT * FROM contacts WHERE id = ?', id, (err, result) => {
+      connection.query('SELECT * FROM receivers WHERE id = ?', id, (err, result) => {
         if (!err) {
           resolve(result)
         } else {
@@ -12,9 +12,9 @@ const contacts = {
       })
     })
   },
-  getAllContact: () => {
+  getAllReceiver: () => {
     return new Promise((resolve, reject) => {
-      connection.query('SELECT * FROM contacts', (err, result) => {
+      connection.query('SELECT * FROM receivers', (err, result) => {
         if (!err) {
           resolve(result)
         } else {
@@ -23,36 +23,36 @@ const contacts = {
       })
     })
   },
-  updateContact: (id, data) => {
+  updateReceiver: (id, data) => {
     return new Promise((resolve, reject) => {
-      connection.query('UPDATE contacts SET ? WHERE id = ?', [data, id], (err, result) => {
+      connection.query('UPDATE receivers SET ? WHERE id = ?', [data, id], (err, result) => {
         if (!err) {
-          resolve('Update Contact Success')
+          resolve('Update Data Success')
         } else {
           reject(new Error(err))
         }
       })
     })
   },
-  deleteContact: (id) => {
+  deleteReceiver: (id) => {
     return new Promise((resolve, reject) => {
-      connection.query('SELECT * FROM contacts WHERE id = ?', id, (err, result) => {
+      connection.query('SELECT * FROM receivers WHERE id = ?', id, (err, result) => {
         if (!err) {
           console.log(result)
           if (result != '') {
-            connection.query('DELETE FROM contacts WHERE id = ?', id, (err, result) => {
+            connection.query('DELETE FROM receivers WHERE id = ?', id, (err, result) => {
               if (!err) {
                 if (result.affectedRows != 0) {
-                  resolve('Delete Contact Success')
+                  resolve('Delete Data Success')
                 } else {
-                  resolve('ID Contact Not Found')
+                  resolve('ID Receiver Not Found')
                 }
               } else {
                 reject(new Error(err))
               }
             })
           } else {
-            resolve('ID Contact Not Found')
+            resolve('ID Receiver Not Found')
           }
         } else {
           reject(new Error(err))
@@ -60,11 +60,11 @@ const contacts = {
       })
     })
   },
-  insertContact: (data) => {
+  insertReceiver: (data) => {
     return new Promise((resolve, reject) => {
-      connection.query('INSERT INTO contacts SET ?', data, (err, result) => {
+      connection.query('INSERT INTO receivers SET ?', data, (err, result) => {
         if (!err) {
-          resolve('Add Contact Success')
+          resolve('Add Data Success')
         } else {
           reject(new Error(err))
         }
@@ -73,4 +73,4 @@ const contacts = {
   }
 }
 
-module.exports = contacts
+module.exports = receivers
