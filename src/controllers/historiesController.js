@@ -56,7 +56,6 @@ const histories = {
     }
     historyModels.insertHistory(data)
       .then((result) => {
-        console.log(result)
         helpers.response(res, null, result, 200, null)
       })
       .catch((err) => {

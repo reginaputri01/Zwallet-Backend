@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 25 Sep 2020 pada 18.45
+-- Waktu pembuatan: 26 Sep 2020 pada 06.21
 -- Versi server: 10.4.14-MariaDB
 -- Versi PHP: 7.4.9
 
@@ -47,6 +47,25 @@ INSERT INTO `history` (`id`, `income`, `expense`, `userId`, `senderId`, `receive
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `phone`
+--
+
+CREATE TABLE `phone` (
+  `id` int(11) NOT NULL,
+  `phoneNumber` varchar(32) NOT NULL,
+  `userId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `phone`
+--
+
+INSERT INTO `phone` (`id`, `phoneNumber`, `userId`) VALUES
+(1, '082367243762841', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `receivers`
 --
 
@@ -62,7 +81,8 @@ CREATE TABLE `receivers` (
 --
 
 INSERT INTO `receivers` (`id`, `name`, `image`, `phoneNumber`) VALUES
-(1, 'Arindaa 1', 'http://localhost:4000/uploads/1600937462453-Rectangle 3.png', '0873217834364');
+(1, 'Arindaa 1', 'http://localhost:4000/uploads/1600937462453-Rectangle 3.png', '0873217834364'),
+(2, 'Arindaa 2', 'http://localhost:4000/uploads/1600937455302-Rectangle 3.png', '0812139232485');
 
 -- --------------------------------------------------------
 
@@ -99,7 +119,6 @@ CREATE TABLE `users` (
   `lastName` varchar(64) NOT NULL,
   `username` varchar(64) NOT NULL,
   `email` varchar(64) NOT NULL,
-  `phoneNumber` varchar(32) NOT NULL,
   `image` varchar(256) NOT NULL,
   `password` varchar(256) NOT NULL,
   `pin` int(11) NOT NULL
@@ -109,8 +128,9 @@ CREATE TABLE `users` (
 -- Dumping data untuk tabel `users`
 --
 
-INSERT INTO `users` (`id`, `firstName`, `lastName`, `username`, `email`, `phoneNumber`, `image`, `password`, `pin`) VALUES
-(1, 'Regina', 'Putri', 'rputria18', 'rputria18@gmail.com', '02893784624', 'http://localhost:4000/uploads/1600941755345-Rectangle 3.png', '$2a$10$0VtZFQLN1F/JGReWSeIgOurV/DxQB.IdIWz0H5FoCsj2I6RMsNgKi', 3011920);
+INSERT INTO `users` (`id`, `firstName`, `lastName`, `username`, `email`, `image`, `password`, `pin`) VALUES
+(1, 'Regina', 'Putri', 'rputria18', 'rputria18@gmail.com', 'http://localhost:4000/uploads/1600941755345-Rectangle 3.png', '$2a$10$h0CCN1U0nAR50NDLd1qUFOVp7.VLndX7avy95pGT7lwKCR3MhAIBK', 3011920),
+(2, 'Aku', 'Putri', 'akuputri', 'reginaputria2003@gmail.com', 'http://localhost:4000/uploads/1601093253099-logo.png', '$2a$10$4/LeCteu9Mjdl6XQG5v0IOHzDe8vAYA0mQTVPH6/8AyxP7JRiqe7O', 0);
 
 --
 -- Indexes for dumped tables
@@ -124,6 +144,13 @@ ALTER TABLE `history`
   ADD KEY `senderId` (`senderId`),
   ADD KEY `userId` (`userId`),
   ADD KEY `history_ibfk_1` (`receiverId`);
+
+--
+-- Indeks untuk tabel `phone`
+--
+ALTER TABLE `phone`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `userId` (`userId`);
 
 --
 -- Indeks untuk tabel `receivers`
@@ -153,19 +180,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `history`
 --
 ALTER TABLE `history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT untuk tabel `phone`
+--
+ALTER TABLE `phone`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `receivers`
 --
 ALTER TABLE `receivers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `transfer`
 --
 ALTER TABLE `transfer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
@@ -186,11 +219,16 @@ ALTER TABLE `history`
   ADD CONSTRAINT `history_ibfk_3` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
 
 --
+-- Ketidakleluasaan untuk tabel `phone`
+--
+ALTER TABLE `phone`
+  ADD CONSTRAINT `phone_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
+
+--
 -- Ketidakleluasaan untuk tabel `transfer`
 --
 ALTER TABLE `transfer`
-  ADD CONSTRAINT `transfer_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `transfer_ibfk_2` FOREIGN KEY (`receiverId`) REFERENCES `receivers` (`id`);
+  ADD CONSTRAINT `transfer_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
