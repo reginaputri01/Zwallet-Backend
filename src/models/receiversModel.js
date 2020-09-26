@@ -12,15 +12,45 @@ const receivers = {
       })
     })
   },
-  getAllReceiver: () => {
+  getAllReceiver: (search, sort, order, page, limit) => {
     return new Promise((resolve, reject) => {
-      connection.query('SELECT * FROM receivers', (err, result) => {
-        if (!err) {
-          resolve(result)
+      let searchReceiver = ''
+      let sortReceiver = ''
+      let pageReceiver = ''
+      if (search != null) {
+        searchReceiver = `WHERE receivers.name LIKE '%${search}%'`
+      }
+      if (sort != null) {
+        if (order != null) {
+          sortReceiver = `ORDER BY ${sort} ${order}`
         } else {
-          reject(new Error(err))
+          sortReceiver = `ORDER BY ${sort} ASC`
         }
-      })
+      }
+      if (page != null) {
+        if (limit != null) {
+          pageReceiver = `LIMIT ${limit} OFFSET ${(page - 1) * limit}`
+        } else {
+          pageReceiver = `LIMIT 3 OFFSET ${(page - 1) * 3}`
+        }
+      }
+      if (sort === 'new') {
+        connection.query(`SELECT * FROM receivers ${searchReceiver} ORDER BY name DESC ${pageReceiver}`, (err, result) => {
+          if (!err) {
+            resolve(result)
+          } else {
+            reject(new Error(err))
+          }
+        })
+      } else {
+        connection.query(`SELECT * FROM receivers ${searchReceiver} ${sortReceiver} ${pageReceiver}`, (err, result) => {
+          if (!err) {
+            resolve(result)
+          } else {
+            reject(new Error(err))
+          }
+        })
+      }
     })
   },
   updateReceiver: (id, data) => {

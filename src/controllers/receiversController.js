@@ -18,7 +18,12 @@ const receivers = {
   },
 
   getAllReceiver: (req, res) => {
-    receiverModels.getAllReceiver()
+    const search = req.query.search
+    const sort = req.query.sort
+    const order = req.query.order
+    const page = req.query.page
+    const limit = req.query.limit
+    receiverModels.getAllReceiver(search, sort, order, page, limit)
       .then((result) => {
         if (result != '') {
           helpers.response(res, null, result, 200, null)

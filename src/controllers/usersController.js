@@ -60,7 +60,7 @@ module.exports = {
     const { password } = req.body
 
     const data = {
-      password: password
+      password
     }
 
     bcrypt.genSalt(10, function (_err, salt) {

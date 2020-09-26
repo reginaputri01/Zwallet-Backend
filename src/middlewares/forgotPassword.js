@@ -3,7 +3,6 @@ const modelUser = require('../models/usersModel')
 const helpers = require('../helpers/helpers')
 
 module.exports = {
-
   forgotPassword: (req, res) => {
     const { email } = req.body
     modelUser.login(email)
@@ -22,7 +21,7 @@ module.exports = {
           from: process.env.MAILER_EMAIL_ID,
           to: email,
           subject: 'Reset your password',
-          html: '<p>You requested for a password reset, kindly use this <a href=' + process.env.RESET_URL + '>link</a> to reset your password</p><br><p>Cheers!</p>'
+          html: '<h1>Hallo, </h1> <p>Click the link below to enter the reset password page and create your new password</p> <a href=' + process.env.RESET_URL + '>Go Reset Password</a>'
         }
 
         transporter.sendMail(mailOptions, (err, info) => {
