@@ -79,13 +79,15 @@ module.exports = {
 
   updateProfile: (req, res) => {
     const id = req.params.id
-    const { firstName, lastName, username, email, phoneNumber } = req.body
+    const { firstName, lastName, username, email } = req.body
     const data = {
       firstName,
       lastName,
       username,
-      email,
-      phoneNumber
+      email
+    }
+    if (req.files) {
+      data.image = process.env.BASE_URL + 'uploads/' + req.files.filename
     }
     modelUser.updateProfile(id, data)
     .then((result) => {
