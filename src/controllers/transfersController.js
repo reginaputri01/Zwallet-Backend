@@ -45,12 +45,12 @@ const transfers = {
     })
   },
   insertTransfer: (req, res) => {
-    const { amount, notes } = req.body
+    const { amount, notes, userId, receiverId } = req.body
     const data = {
       amount,
       notes,
-      userId: 1,
-      receiverId: 1,
+      userId,
+      receiverId,
       date: new Date()
     }
     transferModels.insertTransfer(data)

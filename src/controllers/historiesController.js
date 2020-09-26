@@ -45,13 +45,13 @@ const histories = {
       })
   },
   insertHistory: (req, res) => {
-    const { income, expense } = req.body
+    const { income, expense, userId, senderId, receiverId } = req.body
     const data = {
       income,
       expense,
-      userId: 1,
-      senderId: 1,
-      receiverId: 1,
+      userId,
+      senderId,
+      receiverId,
       date: new Date()
     }
     historyModels.insertHistory(data)
