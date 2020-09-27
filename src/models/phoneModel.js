@@ -3,7 +3,7 @@ const connection = require('../configs/db')
 const phone = {
   getPhoneById: (id) => {
     return new Promise((resolve, reject) => {
-      connection.query('SELECT * FROM users INNER JOIN phone ON phone.userId = users.id WHERE phone.id = ?', id, (err, result) => {
+      connection.query('SELECT * FROM phone WHERE id = ?', id, (err, result) => {
         if (!err) {
           resolve(result)
         } else {
@@ -14,7 +14,7 @@ const phone = {
   },
   getAllPhone: () => {
     return new Promise((resolve, reject) => {
-      connection.query('SELECT * FROM users INNER JOIN phone ON phone.userId = users.id', (err, result) => {
+      connection.query('SELECT * FROM phone', (err, result) => {
         if (!err) {
           resolve(result)
         } else {
