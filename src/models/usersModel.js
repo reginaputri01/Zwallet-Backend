@@ -3,7 +3,7 @@ const connection = require('../configs/db')
 module.exports = {
   login: (email) => {
     return new Promise((resolve, reject) => {
-      connection.query('SELECT * FROM phone INNER JOIN users ON users.phoneId = phone.id WHERE users.email = ?', email, (err, result) => {
+      connection.query('SELECT * FROM users INNER JOIN phone ON phone.userId = users.id WHERE users.email = ?', email, (err, result) => {
         if (!err) {
           resolve(result)
         } else {
@@ -86,7 +86,7 @@ module.exports = {
   getUserById: (id) => {
     return new Promise((resolve, reject) => {
       //SELECT * FROM users INNER JOIN phone ON phone.userId = users.id WHERE phone.id = ?
-      connection.query('SELECT * FROM phone INNER JOIN users ON users.phoneId = phone.id WHERE users.id = ?', id, (err, result) => {
+      connection.query('SELECT * FROM users INNER JOIN phone ON phone.userId = users.id WHERE users.id = ?', id, (err, result) => {
         if (!err) {
           resolve(result)
         } else {

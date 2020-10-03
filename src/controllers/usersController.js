@@ -10,8 +10,7 @@ module.exports = {
       username,
       email,
       password,
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRUAWuCyLgPDLdjZFWwksUy8E4Z0ve2ZqHaKw&usqp=CAU',
-      phoneId: 2
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRUAWuCyLgPDLdjZFWwksUy8E4Z0ve2ZqHaKw&usqp=CAU'
     }
     bcrypt.genSalt(10, function (_err, salt) {
       bcrypt.hash(data.password, salt, function (_err, hash) {

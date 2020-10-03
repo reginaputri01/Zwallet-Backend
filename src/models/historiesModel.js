@@ -3,7 +3,7 @@ const connection = require('../configs/db')
 const histories = {
   getHistoryById: (id) => {
     return new Promise((resolve, reject) => {
-      connection.query('SELECT * FROM history WHERE id = ?', id, (err, result) => {
+      connection.query('SELECT sender.username AS sender, sender.balance AS saldo, receiver.username AS receiver, receiver.image, history.amount, history.notes, history.date FROM history INNER JOIN users AS sender ON history.senderId = sender.id INNER JOIN users AS receiver ON history.receiverId = receiver.id WHERE history.id = ?', id, (err, result) => {
         if (!err) {
           resolve(result)
         } else {
@@ -14,7 +14,7 @@ const histories = {
   },
   getAllHistory: () => {
     return new Promise((resolve, reject) => {
-      connection.query('SELECT * FROM history', (err, result) => {
+      connection.query('SELECT sender.username AS sender, sender.balance AS saldo, receiver.username AS receiver, receiver.image, history.amount, history.notes, history.date FROM history INNER JOIN users AS sender ON history.senderId = sender.id INNER JOIN users AS receiver ON history.receiverId = receiver.id', (err, result) => {
         if (!err) {
           resolve(result)
         } else {
