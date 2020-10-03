@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 26 Sep 2020 pada 06.21
+-- Waktu pembuatan: 03 Okt 2020 pada 09.11
 -- Versi server: 10.4.14-MariaDB
 -- Versi PHP: 7.4.9
 
@@ -29,11 +29,11 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `history` (
   `id` int(11) NOT NULL,
-  `income` int(11) NOT NULL,
-  `expense` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `senderId` int(11) NOT NULL,
   `receiverId` int(11) NOT NULL,
+  `amount` int(11) NOT NULL,
+  `notes` text NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -41,8 +41,10 @@ CREATE TABLE `history` (
 -- Dumping data untuk tabel `history`
 --
 
-INSERT INTO `history` (`id`, `income`, `expense`, `userId`, `senderId`, `receiverId`, `date`) VALUES
-(1, 2000, 39999, 1, 1, 1, '2020-09-25 15:48:47');
+INSERT INTO `history` (`id`, `userId`, `senderId`, `receiverId`, `amount`, `notes`, `date`) VALUES
+(1, 1, 1, 3, 20000, 'bayar hutang', '2020-09-25 15:48:47'),
+(2, 3, 3, 2, 100000, 'bayar olshop', '2020-09-26 04:16:59'),
+(3, 1, 3, 1, 40000, 'bayar iuran', '2020-10-03 06:52:35');
 
 -- --------------------------------------------------------
 
@@ -61,51 +63,8 @@ CREATE TABLE `phone` (
 --
 
 INSERT INTO `phone` (`id`, `phoneNumber`, `userId`) VALUES
-(1, '082367243762841', 1);
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `receivers`
---
-
-CREATE TABLE `receivers` (
-  `id` int(11) NOT NULL,
-  `name` varchar(64) NOT NULL,
-  `image` varchar(256) NOT NULL,
-  `phoneNumber` varchar(32) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data untuk tabel `receivers`
---
-
-INSERT INTO `receivers` (`id`, `name`, `image`, `phoneNumber`) VALUES
-(1, 'Arindaa 1', 'http://localhost:4000/uploads/1600937462453-Rectangle 3.png', '0873217834364'),
-(2, 'Arindaa 2', 'http://localhost:4000/uploads/1600937455302-Rectangle 3.png', '0812139232485');
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `transfer`
---
-
-CREATE TABLE `transfer` (
-  `id` int(11) NOT NULL,
-  `userId` int(11) NOT NULL,
-  `receiverId` int(11) NOT NULL,
-  `amount` int(11) NOT NULL,
-  `balanceLeft` int(11) NOT NULL,
-  `notes` varchar(256) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data untuk tabel `transfer`
---
-
-INSERT INTO `transfer` (`id`, `userId`, `receiverId`, `amount`, `balanceLeft`, `notes`, `date`) VALUES
-(1, 1, 1, 200000, 0, 'bayar utang', '2020-09-25 06:06:28');
+(1, '082367243762841', 1),
+(2, '0823672437', 2);
 
 -- --------------------------------------------------------
 
@@ -121,16 +80,18 @@ CREATE TABLE `users` (
   `email` varchar(64) NOT NULL,
   `image` varchar(256) NOT NULL,
   `password` varchar(256) NOT NULL,
-  `pin` int(11) NOT NULL
+  `pin` int(11) NOT NULL,
+  `balance` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `users`
 --
 
-INSERT INTO `users` (`id`, `firstName`, `lastName`, `username`, `email`, `image`, `password`, `pin`) VALUES
-(1, 'Regina', 'Putri', 'rputria18', 'rputria18@gmail.com', 'http://localhost:4000/uploads/1600941755345-Rectangle 3.png', '$2a$10$h0CCN1U0nAR50NDLd1qUFOVp7.VLndX7avy95pGT7lwKCR3MhAIBK', 3011920),
-(2, 'Aku', 'Putri', 'akuputri', 'reginaputria2003@gmail.com', 'http://localhost:4000/uploads/1601093253099-logo.png', '$2a$10$4/LeCteu9Mjdl6XQG5v0IOHzDe8vAYA0mQTVPH6/8AyxP7JRiqe7O', 0);
+INSERT INTO `users` (`id`, `firstName`, `lastName`, `username`, `email`, `image`, `password`, `pin`, `balance`) VALUES
+(1, 'Regina', 'Putri', 'rputria18', 'rputria18@gmail.com', 'http://localhost:4000/uploads/1601448575670-Rectangle 3.png', '$2a$10$h0CCN1U0nAR50NDLd1qUFOVp7.VLndX7avy95pGT7lwKCR3MhAIBK', 3011920, 80000),
+(2, 'Aku', 'Putri', 'akuputri', 'reginaputria2003@gmail.com', 'http://localhost:4000/uploads/1601199465105-logo.png', '$2a$10$4/LeCteu9Mjdl6XQG5v0IOHzDe8vAYA0mQTVPH6/8AyxP7JRiqe7O', 0, 100000),
+(3, 'Regita', 'Arinda', 'akuarinda', 'reginaputria2003@gmail.com', 'https://i7.pngguru.com/preview/527/663/825/logo-person-user-person-icon.jpg', '$2a$10$O/mpvbLTLbBCUWlbO0iR3eafkLcuoItpVWY5NCjGjeCP6Jz2qZwZq', 0, 0);
 
 --
 -- Indexes for dumped tables
@@ -141,9 +102,8 @@ INSERT INTO `users` (`id`, `firstName`, `lastName`, `username`, `email`, `image`
 --
 ALTER TABLE `history`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `senderId` (`senderId`),
-  ADD KEY `userId` (`userId`),
-  ADD KEY `history_ibfk_1` (`receiverId`);
+  ADD KEY `receiverId` (`receiverId`),
+  ADD KEY `senderId` (`senderId`);
 
 --
 -- Indeks untuk tabel `phone`
@@ -151,20 +111,6 @@ ALTER TABLE `history`
 ALTER TABLE `phone`
   ADD PRIMARY KEY (`id`),
   ADD KEY `userId` (`userId`);
-
---
--- Indeks untuk tabel `receivers`
---
-ALTER TABLE `receivers`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indeks untuk tabel `transfer`
---
-ALTER TABLE `transfer`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `userId` (`userId`),
-  ADD KEY `transfer_ibfk_2` (`receiverId`);
 
 --
 -- Indeks untuk tabel `users`
@@ -180,7 +126,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `history`
 --
 ALTER TABLE `history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `phone`
@@ -189,22 +135,10 @@ ALTER TABLE `phone`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `receivers`
---
-ALTER TABLE `receivers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT untuk tabel `transfer`
---
-ALTER TABLE `transfer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
@@ -214,21 +148,14 @@ ALTER TABLE `users`
 -- Ketidakleluasaan untuk tabel `history`
 --
 ALTER TABLE `history`
-  ADD CONSTRAINT `history_ibfk_1` FOREIGN KEY (`receiverId`) REFERENCES `receivers` (`id`),
-  ADD CONSTRAINT `history_ibfk_2` FOREIGN KEY (`senderId`) REFERENCES `transfer` (`id`),
-  ADD CONSTRAINT `history_ibfk_3` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `history_ibfk_1` FOREIGN KEY (`receiverId`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `history_ibfk_2` FOREIGN KEY (`senderId`) REFERENCES `users` (`id`);
 
 --
 -- Ketidakleluasaan untuk tabel `phone`
 --
 ALTER TABLE `phone`
   ADD CONSTRAINT `phone_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
-
---
--- Ketidakleluasaan untuk tabel `transfer`
---
-ALTER TABLE `transfer`
-  ADD CONSTRAINT `transfer_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
